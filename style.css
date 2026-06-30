@@ -1,0 +1,809 @@
+/* ==========================================================================
+   DESIGN SYSTEM & CUSTOM PROPERTIES
+   ========================================================================== */
+:root {
+    /* Color Palette */
+    --bg-dark: #050508;
+    --card-bg: rgba(10, 10, 16, 0.45);
+    --card-border: rgba(0, 110, 255, 0.6);
+    --card-border-hover: rgba(0, 110, 255, 0.8);
+    
+    /* Accents (Neon Theme) */
+    --accent-primary: #00a2ff;       /* Viola Elettrico */
+    --accent-primary-rgb: 122, 34, 255;
+    --accent-secondary: #00f0ff;     /* Ciano Neon */
+    --accent-secondary-rgb: 0, 240, 255;
+    --accent-pink: #0059ff;          /* Rosa Neon */
+    
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.85);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    
+    /* Typography */
+    --font-sans: 'Outfit', sans-serif;
+    --font-display: 'Syne', sans-serif;
+    
+    /* Shadows & Glows */
+    --glow-primary: 0 0 20px rgba(0, 183, 255, 0.45);
+    --glow-secondary: 0 0 20px rgba(0, 240, 255, 0.4);
+    --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 
+                   inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-sans);
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Scrollbar Custom per dispositivi con overflow */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* Selection Color */
+::selection {
+    background: rgba(0, 162, 255, 0.3);
+    color: #fff;
+}
+
+/* ==========================================================================
+   INTERACTIVE ELEMENTS: CUSTOM DUAL CURSOR
+   ========================================================================== */
+/* Nasconde il cursore di default su desktop per dare l'effetto premium */
+@media (min-width: 481px) {
+    body, a, button, input, [role="button"], .social-btn, .badge {
+        cursor: none !important;
+    }
+}
+
+.cursor-dot, .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 99999; /* Rimane in assoluto in primo piano */
+    transition: width 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
+                height 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
+                background-color 0.25s ease, 
+                border-color 0.25s ease, 
+                box-shadow 0.25s ease,
+                opacity 0.25s ease;
+    opacity: 1;
+}
+
+.cursor-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent-secondary);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-secondary);
+}
+
+.cursor-ring {
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid rgba(0, 110, 255, 0.6);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(0, 110, 255, 0.6);
+}
+
+/* Hover state su elementi interattivi */
+body.cursor-hover .cursor-dot {
+    width: 4px;
+    height: 4px;
+    background-color: #fff;
+    box-shadow: 0 0 8px #fff;
+    opacity: 0.5;
+}
+
+body.cursor-hover .cursor-ring {
+    width: 50px;
+    height: 50px;
+    border-color: var(--accent-secondary);
+    background-color: rgba(0, 240, 255, 0.04);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+}
+
+/* Stato nascosto quando il mouse esce dal viewport */
+body.cursor-hidden .cursor-dot,
+body.cursor-hidden .cursor-ring {
+    opacity: 0;
+}
+
+/* Schermata d'ingresso */
+.entry-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0a0a0a;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.entry-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.entry-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #ffffff;
+    animation: pulse 2.5s infinite ease-in-out;
+}
+
+/* ==========================================================================
+   BACKGROUND & OVERLAYS
+   ========================================================================== */
+.bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(6px) brightness(0.28);
+}
+
+.bg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(6px) brightness(0.28);
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(3, 3, 6, 0.2) 0%, rgba(3, 3, 6, 0.85) 100%);
+    z-index: -1;
+}
+
+/* ==========================================================================
+   GLASSMORPHISM BASE STYLE
+   ========================================================================== */
+.glass-effect {
+    background: var(--card-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    box-shadow: var(--card-shadow);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glass-effect:hover {
+    border-color: var(--card-border-hover); /* Bordo blu colorato */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 25px rgba(0, 110, 255, 0.35); /* Bagliore neon blu */
+    transform: translateY(-4px); /* Leggero sollevamento per feedback visivo */
+}
+
+/* ==========================================================================
+   PANNELLO VOLUME MINI (TOP-RIGHT)
+   ========================================================================== */
+.volume-panel {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 50px;
+    z-index: 10;
+    overflow: hidden;
+    max-width: 48px; /* Stato compresso di default (mostra solo icona) */
+    transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+
+.volume-panel:hover {
+    max-width: 160px; /* Si espande all'hover per rivelare lo slider */
+    background: rgba(10, 10, 16, 0.7);
+}
+
+.mute-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1rem;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.mute-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.volume-slider-container {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    padding-right: 12px;
+    padding-left: 4px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.volume-panel:hover .volume-slider-container {
+    opacity: 1;
+}
+
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-secondary);
+    box-shadow: 0 0 8px var(--accent-secondary);
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.4);
+    background: #fff;
+}
+
+/* ==========================================================================
+   MAIN CONTAINER & CARD TILT
+   ========================================================================== */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 420px;
+    z-index: 1;
+    perspective: 1000px; /* Abilita profondità 3D */
+}
+
+.tilt-element {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* ==========================================================================
+   PROFILE CARD
+   ========================================================================== */
+.profile-card {
+    padding: 35px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Avatar & Pulsing Halo */
+.avatar-container {
+    position: relative;
+    margin-bottom: 18px;
+    transform: translateZ(30px); /* Sposta in avanti nello spazio 3D */
+}
+
+.avatar {
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    position: relative;
+    transition: border-color 0.3s ease;
+}
+
+.profile-card:hover .avatar {
+    border-color: rgba(122, 34, 255, 0.6);
+}
+
+.halo {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--accent-primary), var(--accent-secondary), var(--accent-pink), var(--accent-primary));
+    z-index: 1;
+    animation: spin 4s linear infinite;
+    filter: blur(8px) opacity(0.7);
+    transition: filter 0.3s ease;
+}
+
+.profile-card:hover .halo {
+    filter: blur(12px) opacity(0.95);
+}
+
+/* Username Style */
+.username {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #ffffff 40%, rgba(255, 255, 255, 0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translateZ(25px);
+}
+
+/* Discord-like Badges Container */
+.profile-badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    transform: translateZ(20px);
+}
+
+/* Single Badge with Tooltip */
+.badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    position: relative;
+    cursor: help;
+    transition: all 0.25s ease;
+}
+
+.badge:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* CSS Tooltip */
+.badge[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: #0d0d14;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+.badge[data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Specific Badge colors for glow */
+.badge.staff:hover {
+    color: var(--accent-primary);
+    box-shadow: 0 0 10px rgba(122, 34, 255, 0.3);
+    border-color: rgba(122, 34, 255, 0.4);
+}
+.badge.verified:hover {
+    color: var(--accent-secondary);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    border-color: rgba(0, 240, 255, 0.4);
+}
+.badge.booster:hover {
+    color: var(--accent-pink);
+    box-shadow: 0 0 10px rgba(0, 110, 255, 0.6);
+    border-color: rgba(0, 110, 255, 0.6);
+}
+
+/* Bio Text */
+.bio {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    max-width: 320px;
+    transform: translateZ(15px);
+}
+
+/* Social Buttons */
+.social-links {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    transform: translateZ(20px);
+}
+
+.social-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, var(--hover-color, #fff) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.social-btn i {
+    z-index: 2;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Custom brands colors logic via class names populated in JS */
+.social-btn.github { --hover-color: rgba(255, 255, 255, 0.15); --hover-color-solid: #fff; }
+.social-btn.discord { --hover-color: rgba(88, 101, 242, 0.25); --hover-color-solid: #5865F2; }
+.social-btn.paypal { --hover-color: rgba(0, 121, 193, 0.25); --hover-color-solid: #0079C1; }
+
+.social-btn:hover {
+    color: var(--hover-color-solid, #fff);
+    border-color: var(--hover-color-solid, rgba(255, 255, 255, 0.2));
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 6px 20px var(--hover-color);
+}
+
+.social-btn:hover i {
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   MUSIC CARD
+   ========================================================================== */
+.music-card {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+/* Vinyl disk cover art */
+.cover-container {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    transform: translateZ(20px);
+}
+
+.album-cover {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; /* Stile vinile */
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    animation: rotate-vinyl 12s linear infinite;
+    animation-play-state: paused; /* Controllato via JS */
+    transition: transform 0.3s ease;
+}
+
+.disc-hole {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: var(--bg-dark);
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.8);
+    z-index: 2;
+}
+
+.music-info {
+    flex-grow: 1;
+    min-width: 0; /* Impedisce l'overflow del testo */
+    transform: translateZ(15px);
+}
+
+.music-info h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.3px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.slider-wrapper {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.music-info input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.music-info input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(255,255,255,0.5);
+    transition: transform 0.15s ease;
+}
+
+.music-info input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.4);
+}
+
+/* Equalizer & Controls */
+.music-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    transform: translateZ(25px);
+}
+
+/* Equalizer bars animation */
+.equalizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    width: 20px;
+    height: 18px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.equalizer.active {
+    opacity: 1;
+}
+
+.eq-bar {
+    width: 2px;
+    height: 3px;
+    background-color: var(--accent-secondary);
+    border-radius: 1px;
+    transition: height 0.2s ease;
+}
+
+/* Quando l'equalizzatore è attivo, anima le barre a frequenze diverse */
+.equalizer.active .eq-bar:nth-child(1) { animation: eq-bounce 0.8s ease-in-out infinite alternate; }
+.equalizer.active .eq-bar:nth-child(2) { animation: eq-bounce 0.5s ease-in-out infinite alternate 0.15s; }
+.equalizer.active .eq-bar:nth-child(3) { animation: eq-bounce 0.9s ease-in-out infinite alternate 0.05s; }
+.equalizer.active .eq-bar:nth-child(4) { animation: eq-bounce 0.6s ease-in-out infinite alternate 0.2s; }
+
+.play-btn {
+    background: linear-gradient(135deg, var(--accent-primary), rgba(var(--accent-primary-rgb), 0.7));
+    border: none;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(122, 34, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.play-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 16px rgba(0, 110, 255, 0.6);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+}
+
+.play-btn:active {
+    transform: scale(0.96);
+}
+
+/* ==========================================================================
+   WATERMARK STILE (BOTTOM-RIGHT)
+   ========================================================================== */
+.watermark {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    z-index: 5;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+body:hover .watermark {
+    opacity: 0.8;
+}
+
+/* ==========================================================================
+   KEYFRAMES & ANIMATIONS
+   ========================================================================== */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes rotate-vinyl {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.98); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes eq-bounce {
+    0% { height: 3px; }
+    100% { height: 16px; }
+}
+
+/* ==========================================================================
+   RESPONSIVENESS & MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 480px) {
+    .container {
+        width: 92%;
+        gap: 15px;
+    }
+    
+    .profile-card {
+        padding: 30px 20px;
+    }
+    
+    .username {
+        font-size: 1.5rem;
+    }
+    
+    .avatar {
+        width: 95px;
+        height: 95px;
+    }
+    
+    .volume-panel {
+        top: 15px;
+        right: 15px;
+    }
+    
+    .watermark {
+        bottom: 15px;
+        right: 15px;
+        font-size: 0.65rem;
+    }
+    
+    /* Disabilitiamo Tilt 3D su Mobile per evitare sfarfallii e migliorare performance */
+    .tilt-element {
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    .cursor-dot, .cursor-ring {
+        display: none; /* Rimuove il cursore personalizzato sui touch screen */
+    }
+}
